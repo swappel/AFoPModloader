@@ -18,7 +18,7 @@ def format_strings(original: str) -> str:
     str: This returns the formatted string
     """
 
-    return original.rstrip(["/", "\\"])
+    return original.rstrip("/\\")
 
 def display_help():
     """
@@ -31,7 +31,7 @@ def display_help():
     "debug [mod directory] : Shows important information about a compiled mod\n"
     "help : Shows this page")
 
-def encode(mod_directory: str, mod_name: str, output_directory: str = "") -> None:
+def encode(mod_directory: str, mod_name: str) -> None:
     """
     Encodes the mod root directory into a single file that can be read and/or decompiles by the modloader itself.
     
@@ -41,8 +41,7 @@ def encode(mod_directory: str, mod_name: str, output_directory: str = "") -> Non
     mod_name: This paraleter uses the mod name and uses it as the final file name
     """
     
-    final_directory = format_strings(output_directory)
-    final_directory = final_directory + mod_name
+    final_directory = mod_name
 
     with open(final_directory, "wb") as archive:
         for foldername, _, filenames in os.walk(mod_directory):
@@ -100,18 +99,21 @@ def decode(mod_directory: str, output_directory: str) -> None:
 while (True):
     print(">>>", end=" ")
     user_input = input()
-    user_arguments = userinput.split(" ")
+    user_arguments = user_input.split(" ")
 
     if user_input.startswith("help"):
         display_help()
     elif user_input.startswith("enc") or user_input.startswith("encode"):
-        if len(user_arguments) == 4:
-            encode(user_arguments[1], user_arguments[2], user_arguments[3])
+        print(len(user_arguments), user_arguments)
+        if len(user_arguments) == 3:
+            encode(user_arguments[1], user_arguments[2])
         else:
             print("Wrong format for this command. Please check help documentation for the correct format.")
             continue
     elif user_input.startswith("dec") or user_input.startswith("decode"):
         if len(user_arguments) == 3:
-            pass
+            decode(user_arguments[1], user_arguments[2])
+        else:
+            print("Incorrect format of the command. Please reffer to the documentation from the help command")
     else:
         print(f"Command \"{user_arguments[0]}\" not recognized. Please try again.")
