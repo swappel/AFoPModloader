@@ -41,7 +41,9 @@ def encode(mod_directory: str, mod_name: str) -> None:
     mod_name: This paraleter uses the mod name and uses it as the final file name
     """
     
-    final_directory = mod_name
+    final_directory = "output/" + mod_name + ".fmod"
+
+    os.makedirs("output", exist_ok=True)
 
     with open(final_directory, "wb") as archive:
         for foldername, _, filenames in os.walk(mod_directory):
@@ -104,7 +106,6 @@ while (True):
     if user_input.startswith("help"):
         display_help()
     elif user_input.startswith("enc") or user_input.startswith("encode"):
-        print(len(user_arguments), user_arguments)
         if len(user_arguments) == 3:
             encode(user_arguments[1], user_arguments[2])
         else:
